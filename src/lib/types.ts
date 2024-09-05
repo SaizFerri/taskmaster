@@ -8,3 +8,5 @@ export type Task = {
   dueDate: Date
   createdAt: Date
 }
+
+export type CreateTask = Omit<Task, 'id' | 'createdAt'>

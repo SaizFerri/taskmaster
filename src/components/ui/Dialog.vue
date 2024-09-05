@@ -9,7 +9,7 @@ type Props = {
 
 const props = defineProps<Props>()
 const emit = defineEmits<{
-  (e: 'update:open', open: boolean): void
+  (e: 'onClose', open: boolean): void
 }>()
 
 const isVisible = ref(props.open)
@@ -19,7 +19,7 @@ const previousActiveElement = ref<Element | null>(null)
 
 const close = () => {
   isVisible.value = false
-  emit('update:open', false)
+  emit('onClose', false)
 }
 
 const trapFocus = (e: KeyboardEvent) => {
