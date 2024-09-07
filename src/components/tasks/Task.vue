@@ -1,11 +1,15 @@
 <script lang="ts" setup>
+import Badge from '@/components/ui/Badge.vue'
 import { statusText } from '@/lib/const'
 import type { Task } from '@/lib/types'
-import Badge from '@/components/ui/Badge.vue'
-import { format } from 'date-fns'
-import { Trash2 } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
+import { format } from 'date-fns'
+import { EllipsisVertical, Pencil, Trash2 } from 'lucide-vue-next'
 import { ref } from 'vue'
+import Dropdown from '../ui/dropdown/Dropdown.vue'
+import DropdownItem from '../ui/dropdown/DropdownItem.vue'
+import DropdownList from '../ui/dropdown/DropdownList.vue'
+import DropdownTrigger from '../ui/dropdown/DropdownTrigger.vue'
 import DeleteTaskDialog from './DeleteTaskDialog.vue'
 
 type Props = Task & {
@@ -37,17 +41,29 @@ const isDeleteTaskDialogOpen = ref(false)
           {{ statusText[status] }}
         </Badge>
       </div>
-      <button
-        class="rounded-md p-1 transition ease-linear hover:bg-gray-100"
-        @click="isDeleteTaskDialogOpen = true"
-      >
-        <Trash2 :size="16" class="stroke-red-600" />
-      </button>
-      <DeleteTaskDialog
-        :open="isDeleteTaskDialogOpen"
-        @onClose="isDeleteTaskDialogOpen = false"
-        @onDeleteTask="$emit('onRemove', id)"
-      />
+
+      <Dropdown>
+        <DropdownTrigger
+          as="button"
+          class="rounded-md p-1 transition ease-linear hover:bg-gray-100"
+        >
+          <EllipsisVertical :size="16" />
+        </DropdownTrigger>
+        <DropdownList>
+          <DropdownItem>
+            <div class="flex items-center gap-2">
+              <Pencil :size="12" />
+              <span>Edit</span>
+            </div>
+          </DropdownItem>
+          <DropdownItem @click="isDeleteTaskDialogOpen = true">
+            <div class="flex items-center gap-2 text-red-600">
+              <Trash2 :size="12" />
+              <span>Delete</span>
+            </div>
+          </DropdownItem>
+        </DropdownList>
+      </Dropdown>
     </div>
     <p class="mb-2 text-sm">{{ description }}</p>
     <div class="flex items-center gap-2">
@@ -57,4 +73,9 @@ const isDeleteTaskDialogOpen = ref(false)
       >
     </div>
   </div>
+  <DeleteTaskDialog
+    :open="isDeleteTaskDialogOpen"
+    @onClose="isDeleteTaskDialogOpen = false"
+    @onDeleteTask="$emit('onRemove', id)"
+  />
 </template>
