@@ -6,10 +6,7 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-vue-next'
 import { ref } from 'vue'
-import Dropdown from '../ui/dropdown/Dropdown.vue'
-import DropdownItem from '../ui/dropdown/DropdownItem.vue'
-import DropdownList from '../ui/dropdown/DropdownList.vue'
-import DropdownTrigger from '../ui/dropdown/DropdownTrigger.vue'
+import { Dropdown, DropdownItem, DropdownList, DropdownTrigger } from '@/components/ui/dropdown'
 import DeleteTaskDialog from './DeleteTaskDialog.vue'
 
 type Props = Task & {
