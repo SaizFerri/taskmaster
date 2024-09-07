@@ -26,7 +26,7 @@ function handleFilterStatusChange(e: Event) {
 </script>
 
 <template>
-  <nav class="rounded-md bg-slate-100 p-2">
+  <nav class="flex items-start justify-between rounded-md bg-slate-100 p-2">
     <Button @click="isAddTaskDialogOpen = true">Add task</Button>
     <AddTaskDialog
       :open="isAddTaskDialogOpen"
@@ -36,7 +36,13 @@ function handleFilterStatusChange(e: Event) {
     <div class="flex items-center gap-2">
       <div>
         <label for="status">Filter: </label>
-        <select name="status" id="status" :value="status" @change="handleFilterStatusChange">
+        <select
+          name="status"
+          id="status"
+          class="border-border rounded border p-2"
+          :value="status"
+          @change="handleFilterStatusChange"
+        >
           <option value="">All</option>
           <option value="pending">{{ statusText['pending'] }}</option>
           <option value="inProgress">{{ statusText['inProgress'] }}</option>

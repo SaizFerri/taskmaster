@@ -5,6 +5,8 @@ import Badge from '@/components/ui/Badge.vue'
 import { format } from 'date-fns'
 import { Trash2 } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
+import { ref } from 'vue'
+import DeleteTaskDialog from './DeleteTaskDialog.vue'
 
 type Props = Task & {
   showBadge?: boolean
@@ -14,6 +16,8 @@ withDefaults(defineProps<Props>(), { showBadge: false })
 defineEmits<{
   (e: 'onRemove', id: Task['id']): void
 }>()
+
+const isDeleteTaskDialogOpen = ref(false)
 </script>
 
 <template>
@@ -35,10 +39,15 @@ defineEmits<{
       </div>
       <button
         class="rounded-md p-1 transition ease-linear hover:bg-gray-100"
-        @click="$emit('onRemove', id)"
+        @click="isDeleteTaskDialogOpen = true"
       >
         <Trash2 :size="16" class="stroke-red-600" />
       </button>
+      <DeleteTaskDialog
+        :open="isDeleteTaskDialogOpen"
+        @onClose="isDeleteTaskDialogOpen = false"
+        @onDeleteTask="$emit('onRemove', id)"
+      />
     </div>
     <p class="mb-2 text-sm">{{ description }}</p>
     <div class="flex items-center gap-2">
