@@ -1,89 +1,72 @@
 import type { FormFields } from '@/lib/types'
-import { formToOutput } from '@/lib/utils'
-import { reactive, unref } from 'vue'
-import { z } from 'zod'
+import { reactive } from 'vue'
+import { ZodObject } from 'zod'
 
-export type UseForm<T> = {
-  defaultValues?: Partial<T>
-  schema: z.ZodObject<any>
+export interface UseFormOptions<Input> {
+  defaultValues?: Partial<Input>
 }
 
-export function useForm<T>({ defaultValues = {}, schema }: UseForm<T>) {
-  const form = reactive(createFormFields()) as FormFields<T>
+export function useForm<Input extends Record<string, any>>(
+  schema: ZodObject<any>,
+  options: UseFormOptions<Input> = {}
+) {
+  const defaultValues: Partial<Input> = options.defaultValues || {}
 
-  function createFormFields() {
-    const output: Partial<FormFields<T>> = {}
-
-    for (const key in schema.shape) {
-      if (Object.prototype.hasOwnProperty.call(schema.shape, key)) {
-        const defaultValue = defaultValues[key as keyof T] as string
-        output[key as keyof T] = createFormField(defaultValue ?? '')
+  const formFields = reactive(
+    Object.keys(schema.shape).reduce((acc, key) => {
+      acc[key as keyof Input] = {
+        value: (defaultValues[key as keyof Input] ?? '') as Input[keyof Input],
+        error: ''
       }
-    }
+      return acc
+    }, {} as FormFields<Input>)
+  )
 
-    return output as FormFields<T>
+  const reset = () => {
+    Object.keys(formFields).forEach((key) => {
+      // @ts-expect-error
+      formFields[key as keyof Input].value = (defaultValues[key as keyof Input] ??
+        '') as Input[keyof Input]
+      // @ts-expect-error
+      formFields[key as keyof Input].error = ''
+    })
   }
 
-  function handleSubmit(fn: (data: T) => void) {
+  const clearErrors = () => {
+    Object.keys(formFields).forEach((key) => {
+      // @ts-expect-error
+      formFields[key as keyof Input].error = ''
+    })
+  }
+
+  const handleSubmit = (callback: (data: Input) => void) => {
     return () => {
       clearErrors()
-      const isValid = validate()
 
-      if (!isValid) {
-        return
-      }
+      const formData = Object.keys(formFields).reduce((acc, key) => {
+        // @ts-expect-error
+        acc[key as keyof Input] = formFields[key as keyof Input].value
+        return acc
+      }, {} as Input)
 
-      fn(formToOutput(unref(form)))
-    }
-  }
+      const result = schema.safeParse(formData)
 
-  function validate() {
-    const output = formToOutput<FormFields<T>>(unref(form))
-
-    const validationResult = schema.safeParse(output)
-
-    if (!validationResult.success) {
-      const error = validationResult.error
-
-      error.issues.forEach(({ message, path }) => {
-        let valueToUpdate: any = form
-        path.forEach((v) => {
-          valueToUpdate = valueToUpdate[v as keyof T]
+      if (result.success) {
+        callback(result.data as Input)
+      } else {
+        result.error.errors.forEach((err) => {
+          const path = err.path[0] as keyof Input
+          // @ts-expect-error
+          formFields[path].error = err.message
         })
-        valueToUpdate.error = message
-      })
-
-      return false
-    }
-
-    return true
-  }
-
-  function clearErrors() {
-    for (const key in form) {
-      if (Object.prototype.hasOwnProperty.call(form, key)) {
-        form[key as keyof T].error = ''
       }
     }
   }
 
-  function reset() {
-    for (const key in form) {
-      form[key as keyof T].value = ''
-    }
-  }
-
   return {
-    form,
-    handleSubmit,
+    form: formFields,
     reset,
-    clearErrors
-  }
-}
-
-function createFormField<T>(defaultValue: string = '') {
-  return {
-    value: defaultValue,
-    error: ''
+    clearErrors,
+    handleSubmit
   }
 }

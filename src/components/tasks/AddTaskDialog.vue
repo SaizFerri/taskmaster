@@ -20,9 +20,7 @@ const emit = defineEmits<{
   (e: 'onAddTask', data: CreateTask): void
 }>()
 
-const { form, handleSubmit, reset } = useForm<CreateTaskForm>({
-  schema: CreateTaskSchema
-})
+const { form, handleSubmit, reset } = useForm<CreateTaskForm>(CreateTaskSchema)
 
 const submit = handleSubmit((data) => {
   emit('onAddTask', {
