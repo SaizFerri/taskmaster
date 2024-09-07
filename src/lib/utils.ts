@@ -1,3 +1,4 @@
+import type { FormFields } from '@/lib/types'
 import clsx, { type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -15,4 +16,16 @@ export function generateRandomId() {
   }
 
   return randomId
+}
+
+export function formToOutput<Output>(form: FormFields<Output>): Output {
+  const output: Record<string, unknown> = {}
+
+  for (const key in form) {
+    if (Object.prototype.hasOwnProperty.call(form, key)) {
+      output[key] = form[key].value
+    }
+  }
+
+  return output as Output
 }

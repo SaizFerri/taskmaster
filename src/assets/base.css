@@ -33,4 +33,12 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  @apply text-foreground;
+}
+
+button,
+input,
+select,
+textarea {
+  @apply outline-foreground-button outline-offset-4;
 }

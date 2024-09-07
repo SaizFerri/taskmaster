@@ -79,7 +79,7 @@ watchEffect(() => {
   <Teleport to="body">
     <div
       v-if="isVisible"
-      class="fixed left-0 top-0 flex h-screen w-full items-center justify-center bg-black/50"
+      class="animate-fade fixed left-0 top-0 flex h-screen w-full items-center justify-center bg-black/50"
       role="dialog"
       aria-modal="true"
       aria-labelledby="dialog-title"

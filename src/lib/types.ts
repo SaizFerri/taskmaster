@@ -10,3 +10,10 @@ export type Task = {
 }
 
 export type CreateTask = Omit<Task, 'id' | 'createdAt'>
+
+export type FormField<Value extends string | number | Date = string> = {
+  value: Value
+  error: string
+}
+
+export type FormFields<Input> = Record<keyof Input, FormField>

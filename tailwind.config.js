@@ -6,7 +6,9 @@ export default {
     extend: {
       colors: {
         primary: '#fcb069',
-        background: '#2D1037',
+        foreground: '#1a1a1a',
+        ['foreground-button']: '#2D1037',
+        border: '#E2E8F1',
         brand: {
           50: '#fff6ed',
           100: '#ffecd5',
@@ -19,6 +21,15 @@ export default {
           800: '#993013',
           900: '#7b2a13',
           950: '#431207'
+        }
+      },
+      animation: {
+        fade: 'fadeIn 50ms linear'
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 }
         }
       }
     }
