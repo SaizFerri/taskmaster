@@ -9,7 +9,7 @@ withDefaults(
   }>(),
   { as: Button }
 )
-const { toggle, open } = inject<DropdownContext>(DROPDOWN) ?? {}
+const { toggle, open } = inject<DropdownContext>(DROPDOWN) as DropdownContext
 </script>
 <template>
   <component

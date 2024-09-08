@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@/composables/useForm'
-import type { CreateTask } from '@/lib/types'
+import { TaskStatus, type CreateTask } from '@/lib/types'
 import Button from '../ui/Button.vue'
 import Dialog from '../ui/Dialog.vue'
-import Input from '../ui/Input.vue'
-import Textarea from '../ui/Textarea.vue'
+import TaskFormFields from './TaskFormFields.vue'
 import { CreateTaskSchema, type CreateTaskForm } from './taskUtils'
 
 withDefaults(
@@ -16,8 +15,8 @@ withDefaults(
   }
 )
 const emit = defineEmits<{
-  (e: 'onClose', open: boolean): void
-  (e: 'onAddTask', data: CreateTask): void
+  onClose: [open: boolean]
+  onAddTask: [data: CreateTask]
 }>()
 
 const { form, handleSubmit, reset } = useForm<CreateTaskForm>(CreateTaskSchema)
@@ -26,7 +25,7 @@ const submit = handleSubmit((data) => {
   emit('onAddTask', {
     ...data,
     dueDate: new Date(data.dueDate),
-    status: 'pending'
+    status: TaskStatus.PENDING
   })
 
   reset()
@@ -41,37 +40,7 @@ function handleClose() {
 <template>
   <Dialog :open="open" @onClose="handleClose" title="Add new task">
     <form class="flex flex-col gap-4" @submit.prevent="submit">
-      <div>
-        <label for="title" class="text-sm font-semibold leading-none">Title</label>
-        <Input
-          id="title"
-          v-model="form.title.value"
-          placeholder="Integrate PayPal"
-          autocomplete="off"
-          class="mt-2"
-        />
-        <span v-show="form.title.error" class="text-xs text-red-600">{{ form.title.error }}</span>
-      </div>
-      <div>
-        <label for="description" class="text-sm font-semibold leading-none">Description</label>
-        <Textarea
-          id="description"
-          v-model="form.description.value"
-          :placeholder="`To integrate PayPal do:\n1. Get API Key\n2. Use it\n3. Ship it`"
-          autocomplete="off"
-          class="mt-2"
-        />
-        <span v-show="form.description.error" class="text-xs text-red-600">{{
-          form.description.error
-        }}</span>
-      </div>
-      <div>
-        <label for="dueDate" class="text-sm font-semibold leading-none">Due date</label>
-        <Input id="dueDate" v-model="form.dueDate.value" type="date" class="mt-2" />
-        <span v-show="form.dueDate.error" class="text-xs text-red-600">{{
-          form.dueDate.error
-        }}</span>
-      </div>
+      <TaskFormFields :form="form" />
       <div class="mt-6 flex gap-2">
         <Button>Create</Button>
         <Button variant="secondary" type="button" @click="handleClose">Cancel</Button>

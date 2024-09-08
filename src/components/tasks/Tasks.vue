@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TaskList from '@/components/tasks/TaskList.vue'
 import TaskListControls from '@/components/tasks/TaskListControls.vue'
-import type { CreateTask, Task, TaskStatus } from '@/lib/types'
+import type { CreateTask, EditTask, Task, TaskStatus } from '@/lib/types'
 import { useTasksStore } from '@/stores/tasks'
 import { computed, ref } from 'vue'
 import { type Sort } from './taskUtils'
@@ -37,10 +37,13 @@ function updateStatusFilter(newStatus?: TaskStatus) {
 
 function addTask(data: CreateTask) {
   store.add(data)
-  // window.scrollTo({ top: window.outerHeight, behavior: 'smooth' })
 }
 
-function removeTask(id: string) {
+function editTask(id: Task['id'], data: EditTask) {
+  store.edit(id, data)
+}
+
+function removeTask(id: Task['id']) {
   store.remove(id)
 }
 </script>
@@ -53,5 +56,5 @@ function removeTask(id: string) {
     @onStatusChange="updateStatusFilter"
     @onAddTask="addTask"
   />
-  <TaskList :tasks="tasks" @removeTask="removeTask" />
+  <TaskList :tasks="tasks" @removeTask="removeTask" @editTask="editTask" />
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { statusText } from '@/lib/const'
-import type { CreateTask, TaskStatus } from '@/lib/types'
-import { ArrowDownWideNarrow, ArrowUpNarrowWide } from 'lucide-vue-next'
+import { type CreateTask, TaskStatus } from '@/lib/types'
+import { ArrowDownWideNarrow, ArrowUpNarrowWide, Plus } from 'lucide-vue-next'
 import { ref } from 'vue'
 import Button from '../ui/Button.vue'
 import AddTaskDialog from './AddTaskDialog.vue'
@@ -27,7 +27,10 @@ function handleFilterStatusChange(e: Event) {
 
 <template>
   <nav class="flex items-start justify-between rounded-md bg-slate-100 p-2">
-    <Button @click="isAddTaskDialogOpen = true">Add task</Button>
+    <Button @click="isAddTaskDialogOpen = true" class="flex items-center gap-1">
+      <Plus :size="16" />
+      Add task</Button
+    >
     <AddTaskDialog
       :open="isAddTaskDialogOpen"
       @onClose="isAddTaskDialogOpen = false"
@@ -44,9 +47,9 @@ function handleFilterStatusChange(e: Event) {
           @change="handleFilterStatusChange"
         >
           <option value="">All</option>
-          <option value="pending">{{ statusText['pending'] }}</option>
-          <option value="inProgress">{{ statusText['inProgress'] }}</option>
-          <option value="completed">{{ statusText['completed'] }}</option>
+          <option :value="TaskStatus.PENDING">{{ statusText[TaskStatus.PENDING] }}</option>
+          <option :value="TaskStatus.IN_PROGRESS">{{ statusText[TaskStatus.IN_PROGRESS] }}</option>
+          <option :value="TaskStatus.COMPLETED">{{ statusText[TaskStatus.COMPLETED] }}</option>
         </select>
       </div>
       <div>

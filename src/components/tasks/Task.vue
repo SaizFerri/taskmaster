@@ -1,41 +1,51 @@
 <script lang="ts" setup>
-import Badge from '@/components/ui/Badge.vue'
+import Badge, { type BadgeProps } from '@/components/ui/Badge.vue'
+import { Dropdown, DropdownItem, DropdownList, DropdownTrigger } from '@/components/ui/dropdown'
 import { statusText } from '@/lib/const'
-import type { Task } from '@/lib/types'
+import { TaskStatus, type EditTask, type Task } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { Dropdown, DropdownItem, DropdownList, DropdownTrigger } from '@/components/ui/dropdown'
 import DeleteTaskDialog from './DeleteTaskDialog.vue'
+import EditTaskDialog from './EditTaskDialog.vue'
 
-type Props = Task & {
+type Props = {
+  task: Task
   showBadge?: boolean
 }
 
 withDefaults(defineProps<Props>(), { showBadge: false })
 defineEmits<{
-  (e: 'onRemove', id: Task['id']): void
+  onEdit: [id: Task['id'], task: EditTask]
+  onRemove: [id: Task['id']]
 }>()
 
+const isEditTaskDialogOpen = ref(false)
 const isDeleteTaskDialogOpen = ref(false)
+
+const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
+  [TaskStatus.PENDING]: 'default',
+  [TaskStatus.IN_PROGRESS]: 'info',
+  [TaskStatus.COMPLETED]: 'success'
+}
 </script>
 
 <template>
   <div
     :class="
       cn('rounded-md border border-slate-200 bg-green-100 p-4', {
-        'bg-white': status === 'pending',
-        'bg-blue-100': status === 'inProgress',
-        'bg-green-100': status === 'completed'
+        'bg-white': task.status === TaskStatus.PENDING,
+        'bg-blue-100': task.status === TaskStatus.IN_PROGRESS,
+        'bg-green-100': task.status === TaskStatus.COMPLETED
       })
     "
   >
     <div class="mb-2 flex items-start justify-between gap-2">
       <div class="flex items-center gap-2">
-        <span class="text font-bold">{{ title }}</span>
-        <Badge v-if="showBadge" :variant="status">
-          {{ statusText[status] }}
+        <span class="text font-bold">{{ task.title }}</span>
+        <Badge v-if="showBadge" :variant="badgeVariant[task.status]">
+          {{ statusText[task.status] }}
         </Badge>
       </div>
 
@@ -47,7 +57,7 @@ const isDeleteTaskDialogOpen = ref(false)
           <EllipsisVertical :size="16" />
         </DropdownTrigger>
         <DropdownList>
-          <DropdownItem>
+          <DropdownItem @click="isEditTaskDialogOpen = true">
             <div class="flex items-center gap-2">
               <Pencil :size="12" />
               <span>Edit</span>
@@ -62,17 +72,23 @@ const isDeleteTaskDialogOpen = ref(false)
         </DropdownList>
       </Dropdown>
     </div>
-    <p class="mb-2 text-sm">{{ description }}</p>
+    <p class="mb-2 text-sm">{{ task.description }}</p>
     <div class="flex items-center gap-2">
-      <span class="text-sm">{{ format(dueDate, 'MMMM d, yyyy') }}</span>
-      <Badge v-if="Date.now() > dueDate.getTime()" variant="pending" class="bg-red-200 text-red-600"
+      <span class="text-sm">{{ format(task.dueDate, 'MMMM d, yyyy') }}</span>
+      <Badge v-if="Date.now() > task.dueDate.getTime()" class="bg-red-200 text-red-600"
         >Overdue</Badge
       >
     </div>
   </div>
+  <EditTaskDialog
+    :open="isEditTaskDialogOpen"
+    :task="task"
+    @onClose="isEditTaskDialogOpen = false"
+    @onEditTask="(data: EditTask) => $emit('onEdit', task.id, data)"
+  />
   <DeleteTaskDialog
     :open="isDeleteTaskDialogOpen"
     @onClose="isDeleteTaskDialogOpen = false"
-    @onDeleteTask="$emit('onRemove', id)"
+    @onDeleteTask="$emit('onRemove', task.id)"
   />
 </template>

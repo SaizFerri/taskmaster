@@ -22,10 +22,10 @@ export function useForm<Input extends Record<string, any>>(
     }, {} as FormFields<Input>)
   )
 
-  const reset = () => {
+  const reset = (newDefaultValues: Partial<Input> = {}) => {
     Object.keys(formFields).forEach((key) => {
       // @ts-expect-error
-      formFields[key as keyof Input].value = (defaultValues[key as keyof Input] ??
+      formFields[key as keyof Input].value = (newDefaultValues[key as keyof Input] ??
         '') as Input[keyof Input]
       // @ts-expect-error
       formFields[key as keyof Input].error = ''

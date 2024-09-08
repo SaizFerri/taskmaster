@@ -4,11 +4,11 @@ import { UseFocusTrap } from '@vueuse/integrations/useFocusTrap/component'
 import { inject, ref } from 'vue'
 import { DROPDOWN, type DropdownContext } from './dropdownUtils'
 
-const { open, close } = inject<DropdownContext>(DROPDOWN) ?? {}
+const { open, close } = inject<DropdownContext>(DROPDOWN) as DropdownContext
 
 const el = ref(null)
 
-onClickOutside(el, () => close?.())
+onClickOutside(el, () => close())
 </script>
 <template>
   <UseFocusTrap v-if="open" :options="{ immediate: true, allowOutsideClick: true }">

@@ -1,4 +1,8 @@
-export type TaskStatus = 'pending' | 'inProgress' | 'completed'
+export enum TaskStatus {
+  PENDING = 'pending',
+  IN_PROGRESS = 'inProgress',
+  COMPLETED = 'completed'
+}
 
 export type Task = {
   id: string
@@ -10,6 +14,7 @@ export type Task = {
 }
 
 export type CreateTask = Omit<Task, 'id' | 'createdAt'>
+export type EditTask = Omit<Task, 'id' | 'createdAt'>
 
 export type FormField<Value> = {
   value: Value

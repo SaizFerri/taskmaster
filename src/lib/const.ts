@@ -1,10 +1,10 @@
-import type { Task, TaskStatus } from '@/lib/types'
+import { TaskStatus, type Task } from '@/lib/types'
 import { generateRandomId } from '@/lib/utils'
 
 export const statusText: Record<TaskStatus, string> = {
-  pending: 'Pending',
-  inProgress: 'In progress',
-  completed: 'Completed'
+  [TaskStatus.PENDING]: 'Pending',
+  [TaskStatus.IN_PROGRESS]: 'In progress',
+  [TaskStatus.COMPLETED]: 'Completed'
 }
 
 export const tasks: Task[] = [
@@ -12,7 +12,7 @@ export const tasks: Task[] = [
     id: generateRandomId(),
     title: 'Complete project documentation',
     description: 'Write detailed documentation for the new project features.',
-    status: 'pending',
+    status: TaskStatus.PENDING,
     dueDate: new Date('2024-09-30'),
     createdAt: new Date('2024-09-01')
   },
@@ -20,7 +20,7 @@ export const tasks: Task[] = [
     id: generateRandomId(),
     title: 'Team meeting',
     description: 'Weekly sync with the team to review progress and next steps.',
-    status: 'inProgress',
+    status: TaskStatus.IN_PROGRESS,
     dueDate: new Date('2024-09-10'),
     createdAt: new Date('2024-09-03')
   },
@@ -28,7 +28,7 @@ export const tasks: Task[] = [
     id: generateRandomId(),
     title: 'Code review',
     description: 'Review the pull requests for the upcoming release.',
-    status: 'pending',
+    status: TaskStatus.PENDING,
     dueDate: new Date('2024-09-12'),
     createdAt: new Date('2024-09-04')
   },
@@ -37,7 +37,7 @@ export const tasks: Task[] = [
     title: 'Client feedback session',
     description:
       'Organize a feedback session with the client to gather insights on the new features.',
-    status: 'pending',
+    status: TaskStatus.PENDING,
     dueDate: new Date('2024-09-15'),
     createdAt: new Date('2024-09-05')
   },
@@ -45,7 +45,7 @@ export const tasks: Task[] = [
     id: generateRandomId(),
     title: 'Bug fixing',
     description: 'Address the reported bugs from the QA team.',
-    status: 'inProgress',
+    status: TaskStatus.IN_PROGRESS,
     dueDate: new Date('2024-09-13'),
     createdAt: new Date('2024-09-02')
   },
@@ -53,7 +53,7 @@ export const tasks: Task[] = [
     id: generateRandomId(),
     title: 'Release planning',
     description: 'Plan the schedule for the upcoming product release.',
-    status: 'completed',
+    status: TaskStatus.COMPLETED,
     dueDate: new Date('2024-09-05'),
     createdAt: new Date('2024-08-30')
   }
