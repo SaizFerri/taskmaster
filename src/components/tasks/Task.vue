@@ -4,7 +4,7 @@ import { Dropdown, DropdownItem, DropdownList, DropdownTrigger } from '@/compone
 import { statusText } from '@/lib/const'
 import { TaskStatus, type EditTask, type Task } from '@/lib/types'
 import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
+import { addDays, format, isAfter, isBefore, startOfDay } from 'date-fns'
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-vue-next'
 import { ref } from 'vue'
 import DeleteTaskDialog from './DeleteTaskDialog.vue'
@@ -76,11 +76,16 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
     <div class="flex items-center gap-2">
       <span class="text-sm">{{ format(task.dueDate, 'MMMM d, yyyy') }}</span>
       <Badge
-        v-if="Date.now() > task.dueDate.getTime() && task.status !== TaskStatus.COMPLETED"
+        v-if="
+          isBefore(task.dueDate, startOfDay(new Date())) && task.status !== TaskStatus.COMPLETED
+        "
         class="bg-red-200 text-red-600"
         >Overdue</Badge
       >
     </div>
+    <span class="mt-2 block text-xs text-slate-400"
+      >Created: {{ format(task.createdAt, 'MMMM d, yyyy') }}</span
+    >
   </div>
   <EditTaskDialog
     :open="isEditTaskDialogOpen"
