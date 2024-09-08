@@ -17,6 +17,7 @@ const emit = defineEmits<{
 
 const handleDelete = () => {
   emit('onDeleteTask')
+  handleClose()
 }
 
 function handleClose() {

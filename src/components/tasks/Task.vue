@@ -4,18 +4,18 @@ import { Dropdown, DropdownItem, DropdownList, DropdownTrigger } from '@/compone
 import { statusText } from '@/lib/const'
 import { TaskStatus, type EditTask, type Task } from '@/lib/types'
 import { cn } from '@/lib/utils'
-import { addDays, format, isAfter, isBefore, startOfDay } from 'date-fns'
+import { format, isBefore, startOfDay } from 'date-fns'
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-vue-next'
 import { ref } from 'vue'
 import DeleteTaskDialog from './DeleteTaskDialog.vue'
 import EditTaskDialog from './EditTaskDialog.vue'
 
-type Props = {
+export type TaskProps = {
   task: Task
   showBadge?: boolean
 }
 
-withDefaults(defineProps<Props>(), { showBadge: false })
+withDefaults(defineProps<TaskProps>(), { showBadge: false })
 defineEmits<{
   onEdit: [id: Task['id'], task: EditTask]
   onRemove: [id: Task['id']]

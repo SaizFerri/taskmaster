@@ -54,6 +54,9 @@ importers:
       '@rushstack/eslint-patch':
         specifier: ^1.8.0
         version: 1.10.4
+      '@storybook/addon-actions':
+        specifier: ^8.2.9
+        version: 8.2.9(storybook@8.2.9(@babel/preset-env@7.25.4(@babel/core@7.25.2)))
       '@storybook/addon-essentials':
         specifier: ^8.2.9
         version: 8.2.9(storybook@8.2.9(@babel/preset-env@7.25.4(@babel/core@7.25.2)))

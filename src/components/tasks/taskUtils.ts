@@ -13,15 +13,17 @@ export const TaskSchema = z.object({
   dueDate: z.coerce.date()
 })
 
-export const CreateTaskSchema = TaskSchema.pick({ title: true, description: true, dueDate: true })
+export const CreateTaskSchema = TaskSchema.pick({
+  title: true,
+  description: true
+}).extend({ dueDate: z.string().date() })
 
 export type CreateTaskForm = z.infer<typeof CreateTaskSchema>
 
 export const EditTaskSchema = TaskSchema.pick({
   title: true,
   description: true,
-  dueDate: true,
   status: true
-})
+}).extend({ dueDate: z.string().date() })
 
 export type EditTaskForm = z.infer<typeof EditTaskSchema>

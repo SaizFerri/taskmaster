@@ -9,8 +9,8 @@ export enum TaskStatus {
 
 export type Task = z.infer<typeof TaskSchema>
 
-export type CreateTask = Omit<Task, 'id' | 'createdAt'>
-export type EditTask = Omit<Task, 'id' | 'createdAt'>
+export type CreateTask = Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
+export type EditTask = Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
 
 export type FormField<Value> = {
   value: Value
