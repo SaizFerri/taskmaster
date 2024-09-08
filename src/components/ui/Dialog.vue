@@ -31,7 +31,7 @@ watchEffect(() => {
   <Teleport to="body">
     <UseFocusTrap v-if="isVisible" :options="{ immediate: true, allowOutsideClick: true }">
       <div
-        class="animate-fade fixed left-0 top-0 flex h-screen w-full items-center justify-center bg-black/50"
+        class="fixed left-0 top-0 z-10 flex h-screen w-full animate-fade items-center justify-center bg-black/50"
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialog-title"

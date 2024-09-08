@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils'
 import { cva, type VariantProps } from 'class-variance-authority'
 
-const button = cva('rounded-md font-semibold transition ease-linear', {
+const button = cva('rounded-md font-semibold transition ease-linear text-sm', {
   variants: {
     variant: {
       primary: 'bg-primary text-foreground-button hover:bg-brand-400/90',
@@ -16,7 +16,7 @@ const button = cva('rounded-md font-semibold transition ease-linear', {
   }
 })
 
-type ButtonProps = VariantProps<typeof button>
+export type ButtonProps = VariantProps<typeof button>
 
 withDefaults(defineProps<{ variant?: ButtonProps['variant']; size?: ButtonProps['size'] }>(), {
   variant: 'primary',
