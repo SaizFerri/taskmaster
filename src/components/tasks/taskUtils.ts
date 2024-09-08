@@ -9,6 +9,7 @@ export const TaskSchema = z.object({
   title: z.string().min(1).max(255),
   description: z.string().min(1),
   createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
   dueDate: z.coerce.date()
 })
 

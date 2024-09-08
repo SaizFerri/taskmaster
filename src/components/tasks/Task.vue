@@ -83,9 +83,14 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
         >Overdue</Badge
       >
     </div>
-    <span class="mt-2 block text-xs text-slate-400"
-      >Created: {{ format(task.createdAt, 'MMMM d, yyyy') }}</span
-    >
+    <div class="mt-2 flex flex-col gap-1">
+      <span class="text-xs text-slate-400"
+        >Created: {{ format(task.createdAt, 'MMMM d, yyyy') }}</span
+      >
+      <span class="text-xs text-slate-400"
+        >Updated: {{ format(task.updatedAt, 'MMMM d, yyyy') }}</span
+      >
+    </div>
   </div>
   <EditTaskDialog
     :open="isEditTaskDialogOpen"

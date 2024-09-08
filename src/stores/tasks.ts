@@ -13,14 +13,15 @@ export const useTasksStore = defineStore('tasks', () => {
     tasks.value.push({
       ...task,
       id: generateRandomId(),
-      createdAt: new Date()
+      createdAt: new Date(),
+      updatedAt: new Date()
     })
   }
 
   function edit(id: Task['id'], data: EditTask) {
     tasks.value = tasks.value.reduce<Task[]>((acc, task) => {
       if (task.id === id) {
-        return [...acc, { ...task, ...data }]
+        return [...acc, { ...task, ...data, updatedAt: new Date() }]
       }
 
       return [...acc, task]

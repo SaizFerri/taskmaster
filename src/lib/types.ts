@@ -1,17 +1,13 @@
+import type { TaskSchema } from '@/components/tasks/taskUtils'
+import type { z } from 'zod'
+
 export enum TaskStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'inProgress',
   COMPLETED = 'completed'
 }
 
-export type Task = {
-  id: string
-  title: string
-  description: string
-  status: TaskStatus
-  dueDate: Date
-  createdAt: Date
-}
+export type Task = z.infer<typeof TaskSchema>
 
 export type CreateTask = Omit<Task, 'id' | 'createdAt'>
 export type EditTask = Omit<Task, 'id' | 'createdAt'>
