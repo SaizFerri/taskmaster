@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import TaskList from '@/components/tasks/TaskList.vue'
 import TaskListControls from '@/components/tasks/TaskListControls.vue'
-import type { CreateTask, EditTask, Task, TaskStatus } from '@/lib/types'
+import { TaskStatus, type CreateTask, type EditTask, type Sort, type Task } from '@/lib/types'
 import { useTasksStore } from '@/stores/tasks'
 import { computed, ref } from 'vue'
-import { type Sort } from './taskUtils'
+import AddTaskDialog from './AddTaskDialog.vue'
 
 const status = ref<TaskStatus | undefined>(undefined)
 const sort = ref<Sort>('asc')
 const store = useTasksStore()
+const isAddTaskDialogOpen = ref(false)
+const addTaskStatus = ref(TaskStatus.PENDING)
 
 const tasks = computed(() => {
   const filterByStatus =
@@ -36,7 +38,9 @@ function updateStatusFilter(newStatus?: TaskStatus) {
 }
 
 function addTask(data: CreateTask) {
-  store.add(data)
+  store.add({ ...data, status: addTaskStatus.value })
+  isAddTaskDialogOpen.value = false
+  addTaskStatus.value = TaskStatus.PENDING
 }
 
 function editTask(id: Task['id'], data: EditTask) {
@@ -54,7 +58,22 @@ function removeTask(id: Task['id']) {
     :sort="sort"
     @onSortChange="updateDateSort"
     @onStatusChange="updateStatusFilter"
+    @onAddTask="isAddTaskDialogOpen = true"
+  />
+  <TaskList
+    :tasks="tasks"
+    @onAddTask="
+      (status: TaskStatus) => {
+        addTaskStatus = status
+        isAddTaskDialogOpen = true
+      }
+    "
+    @onRemoveTask="removeTask"
+    @onEditTask="editTask"
+  />
+  <AddTaskDialog
+    :open="isAddTaskDialogOpen"
+    @onClose="isAddTaskDialogOpen = false"
     @onAddTask="addTask"
   />
-  <TaskList :tasks="tasks" @removeTask="removeTask" @editTask="editTask" />
 </template>

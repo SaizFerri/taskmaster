@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+export type Sort = 'asc' | 'desc'
+
 export enum TaskStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'inProgress',

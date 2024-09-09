@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import Task from '@/components/tasks/Task.vue'
 import { statusText } from '@/lib/const'
-import type { EditTask, Task as TTask } from '@/lib/types'
+import type { EditTask, Task as TaskType } from '@/lib/types'
 import { TaskStatus } from '@/lib/types'
+import { Plus } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
+import Button from '../ui/Button.vue'
 
 const props = defineProps<{
-  tasks: TTask[]
+  tasks: TaskType[]
 }>()
 
 const emit = defineEmits<{
-  editTask: [id: TTask['id'], task: EditTask]
-  removeTask: [id: TTask['id']]
+  onAddTask: [status: TaskStatus]
+  onEditTask: [id: TaskType['id'], task: EditTask]
+  onRemoveTask: [id: TaskType['id']]
 }>()
 
 const tasksByStatus = computed(() =>
-  props.tasks.reduce<Record<TaskStatus, TTask[]>>(
+  props.tasks.reduce<Record<TaskStatus, TaskType[]>>(
     (byStatus, task) => {
       return {
         ...byStatus,
@@ -30,15 +33,15 @@ const tasksByStatus = computed(() =>
   )
 )
 
-const draggedTask = ref<TTask>()
+const draggedTask = ref<TaskType>()
 
-const onDragStart = (task: TTask) => {
+const onDragStart = (task: TaskType) => {
   draggedTask.value = task
 }
 
 const onDrop = (status: TaskStatus) => {
   if (draggedTask && draggedTask.value?.status !== status) {
-    emit('editTask', draggedTask.value!.id, { ...draggedTask.value!, status })
+    emit('onEditTask', draggedTask.value!.id, { ...draggedTask.value!, status })
   }
 
   draggedTask.value = undefined
@@ -66,11 +69,16 @@ const onDrop = (status: TaskStatus) => {
         v-for="task in tasksByStatus[status]"
         :key="task.id"
         :task="task"
-        @onEdit="(id, data) => $emit('editTask', id, data)"
-        @onRemove="(id) => $emit('removeTask', id)"
+        @onEdit="(id, data) => $emit('onEditTask', id, data)"
+        @onRemove="(id) => $emit('onRemoveTask', id)"
         draggable="true"
         @dragstart="onDragStart(task)"
       />
+      <Button
+        class="bg-white/50 text-center text-foreground-button hover:bg-white"
+        @click="$emit('onAddTask', status)"
+        ><Plus :size="16" class="inline-block"
+      /></Button>
     </div>
   </div>
 </template>

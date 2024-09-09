@@ -31,7 +31,7 @@ export class RemoteTaskService implements TaskService {
       body: JSON.stringify(task)
     })
     if (!response.ok) {
-      throw new Error('There was an error creating the tasks')
+      throw new Error('There was an error updating the tasks')
     }
   }
   async remove(id: Task['id']) {

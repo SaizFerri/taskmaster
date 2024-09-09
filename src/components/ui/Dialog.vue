@@ -36,7 +36,6 @@ watchEffect(() => {
         aria-modal="true"
         aria-labelledby="dialog-title"
         @keydown.esc="close"
-        @click.self="close"
       >
         <div
           class="relative w-full max-w-[500px] rounded-md bg-white p-5"

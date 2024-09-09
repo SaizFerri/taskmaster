@@ -1,24 +1,17 @@
 <script setup lang="ts">
 import { statusText } from '@/lib/const'
-import { type CreateTask, TaskStatus } from '@/lib/types'
+import { TaskStatus, type Sort } from '@/lib/types'
 import { ArrowDownWideNarrow, ArrowUpNarrowWide, Plus } from 'lucide-vue-next'
 import { ref } from 'vue'
 import Button from '../ui/Button.vue'
-import AddTaskDialog from './AddTaskDialog.vue'
-import { type Sort } from './taskUtils'
 
 const isAddTaskDialogOpen = ref(false)
 defineProps<{ status?: TaskStatus; sort?: Sort }>()
 const emit = defineEmits<{
   (e: 'onStatusChange', status?: TaskStatus): void
   (e: 'onSortChange'): void
-  (e: 'onAddTask', data: CreateTask): void
+  (e: 'onAddTask'): void
 }>()
-
-function handleAddTask(data: CreateTask) {
-  emit('onAddTask', data)
-  isAddTaskDialogOpen.value = false
-}
 
 function handleFilterStatusChange(e: Event) {
   emit('onStatusChange', ((e.target as HTMLSelectElement).value as TaskStatus) || undefined)
@@ -27,15 +20,10 @@ function handleFilterStatusChange(e: Event) {
 
 <template>
   <nav class="flex flex-wrap items-start justify-between gap-4 rounded-md bg-slate-100 p-2">
-    <Button @click="isAddTaskDialogOpen = true" class="flex items-center gap-1">
+    <Button @click="$emit('onAddTask')" class="flex items-center gap-1">
       <Plus :size="16" aria-hidden />
       Add task</Button
     >
-    <AddTaskDialog
-      :open="isAddTaskDialogOpen"
-      @onClose="isAddTaskDialogOpen = false"
-      @onAddTask="handleAddTask"
-    />
     <div class="flex items-center gap-2">
       <div>
         <label for="status">Filter: </label>

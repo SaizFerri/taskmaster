@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { cn } from '@/lib/utils'
 import { cva, type VariantProps } from 'class-variance-authority'
+import type { ClassValue } from 'clsx'
 
 const button = cva('rounded-md font-semibold transition ease-linear text-sm', {
   variants: {
@@ -25,7 +26,7 @@ withDefaults(defineProps<{ variant?: ButtonProps['variant']; size?: ButtonProps[
 </script>
 
 <template>
-  <button :class="cn(button({ variant, size }))">
+  <button :class="cn(button({ variant, size }), $props.class as ClassValue)">
     <slot></slot>
   </button>
 </template>
