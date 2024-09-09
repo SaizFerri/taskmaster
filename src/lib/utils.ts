@@ -1,4 +1,4 @@
-import type { FormFields } from '@/lib/types'
+import type { FormFields } from './types'
 import clsx, { type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 

@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="T extends CreateTaskForm">
-import type { FormFields } from '@/lib/types'
-import type { CreateTaskForm } from './taskUtils'
+import type { CreateTaskForm, FormFields } from '@/lib/types'
 import Input from '../ui/Input.vue'
 import Textarea from '../ui/Textarea.vue'
 

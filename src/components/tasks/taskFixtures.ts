@@ -6,9 +6,9 @@ export function mockTask(overrides: Partial<Task> = {}): Task {
     title: 'Complete project documentation',
     description: 'Write detailed documentation for the new project features.',
     status: TaskStatus.PENDING,
-    dueDate: new Date('2024-09-30'),
-    createdAt: new Date('2024-09-01'),
-    updatedAt: new Date('2024-09-01'),
+    dueDate: new Date('2024-09-30').toISOString(),
+    createdAt: new Date('2024-09-01').toISOString(),
+    updatedAt: new Date('2024-09-01').toISOString(),
     ...overrides
   }
 }

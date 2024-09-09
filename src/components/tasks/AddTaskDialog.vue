@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useForm } from '@/composables/useForm'
-import { TaskStatus, type CreateTask } from '@/lib/types'
+import { CreateTaskSchema, TaskStatus, type CreateTask, type CreateTaskForm } from '@/lib/types'
 import Button from '../ui/Button.vue'
 import Dialog from '../ui/Dialog.vue'
 import TaskFormFields from './TaskFormFields.vue'
-import { CreateTaskSchema, type CreateTaskForm } from './taskUtils'
 
 withDefaults(
   defineProps<{
@@ -24,7 +23,7 @@ const { form, handleSubmit, reset } = useForm<CreateTaskForm>(CreateTaskSchema)
 const submit = handleSubmit((data) => {
   emit('onAddTask', {
     ...data,
-    dueDate: new Date(data.dueDate),
+    dueDate: data.dueDate,
     status: TaskStatus.PENDING
   })
 

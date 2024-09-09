@@ -74,10 +74,11 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
     </div>
     <p class="mb-2 text-sm">{{ task.description }}</p>
     <div class="flex items-center gap-2">
-      <span class="text-sm">{{ format(task.dueDate, 'MMMM d, yyyy') }}</span>
+      <span class="text-sm">{{ format(new Date(task.dueDate), 'MMMM d, yyyy') }}</span>
       <Badge
         v-if="
-          isBefore(task.dueDate, startOfDay(new Date())) && task.status !== TaskStatus.COMPLETED
+          isBefore(new Date(task.dueDate), startOfDay(new Date())) &&
+          task.status !== TaskStatus.COMPLETED
         "
         class="bg-red-200 text-red-600"
         >Overdue</Badge

@@ -16,9 +16,9 @@ const tasks = computed(() => {
 
   const sortByDate = (a: Task, b: Task) => {
     if (sort.value === 'asc') {
-      return a.dueDate.getTime() - b.dueDate.getTime()
+      return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
     } else if (sort.value === 'desc') {
-      return b.dueDate.getTime() - a.dueDate.getTime()
+      return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime()
     } else {
       return -1
     }

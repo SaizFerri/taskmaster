@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { useForm } from '@/composables/useForm'
-import { TaskStatus, type EditTask, type Task } from '@/lib/types'
+import { statusText } from '@/lib/const'
+import {
+  EditTaskSchema,
+  TaskStatus,
+  type EditTask,
+  type EditTaskForm,
+  type Task
+} from '@/lib/types'
+import { watch } from 'vue'
 import Button from '../ui/Button.vue'
 import Dialog from '../ui/Dialog.vue'
 import TaskFormFields from './TaskFormFields.vue'
-import { EditTaskSchema, type EditTaskForm } from './taskUtils'
-import { statusText, tasks } from '@/lib/const'
-import { watch, watchEffect } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -34,19 +39,18 @@ watch(
 const submit = handleSubmit((data) => {
   emit('onEditTask', {
     ...data,
-    dueDate: new Date(data.dueDate)
+    dueDate: data.dueDate
   })
 
   handleClose()
 })
 
 function handleClose() {
-  reset()
   emit('onClose', false)
 }
 
 function getDefaultValues(task: Task) {
-  return { ...task, dueDate: task.dueDate.toISOString().split('T')[0] }
+  return { ...task, dueDate: new Date(task.dueDate).toISOString().split('T')[0] }
 }
 </script>
 
@@ -58,7 +62,7 @@ function getDefaultValues(task: Task) {
         <select
           name="status"
           id="status"
-          class="border-border mt-2 w-full rounded border p-2"
+          class="mt-2 w-full rounded border border-border p-2"
           v-model="form.status.value"
         >
           <option value="">All</option>

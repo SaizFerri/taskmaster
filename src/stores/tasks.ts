@@ -1,57 +1,60 @@
-import { TaskSchema } from '@/components/tasks/taskUtils'
+import { LocalStorageTaskService } from '@/api/tasks/LocalStorageTaskService'
+import { RemoteTaskService } from '@/api/tasks/RemoteTaskService'
 import type { CreateTask, EditTask, Task } from '@/lib/types'
-import { generateRandomId } from '@/lib/utils'
 import { defineStore } from 'pinia'
-import SuperJSON from 'superjson'
 import { ref } from 'vue'
-import { z } from 'zod'
+
+const service = getService()
 
 export const useTasksStore = defineStore('tasks', () => {
-  let tasks = ref(getInitialState())
+  const isLoading = ref(false)
+  const tasks = ref<Task[]>([])
 
-  function add(task: CreateTask) {
-    tasks.value.push({
-      ...task,
-      id: generateRandomId(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    })
+  async function initialize() {
+    isLoading.value = true
+    const data = await service.getAll()
+    tasks.value = data
+    isLoading.value = false
   }
 
-  function edit(id: Task['id'], data: EditTask) {
-    tasks.value = tasks.value.reduce<Task[]>((acc, task) => {
-      if (task.id === id) {
-        return [...acc, { ...task, ...data, updatedAt: new Date() }]
-      }
-
-      return [...acc, task]
-    }, [])
+  async function add(task: CreateTask) {
+    await service.create(task)
+    await refetchTasks()
   }
 
-  function remove(id: Task['id']) {
-    tasks.value = tasks.value.filter((task) => task.id !== id)
+  async function edit(id: Task['id'], data: EditTask) {
+    await service.update(id, data)
+    await refetchTasks()
   }
 
-  return { tasks, add, edit, remove }
+  async function remove(id: Task['id']) {
+    try {
+      await service.remove(id)
+    } catch (error) {
+      console.log(error)
+      return
+    }
+    await refetchTasks()
+  }
+
+  async function refetchTasks() {
+    tasks.value = await service.getAll()
+  }
+
+  return { tasks, isLoading, add, edit, remove, initialize }
 })
 
 export const useTaskStoreSubscribers = () => {
   const state = useTasksStore()
-
-  state.$subscribe((_, { tasks }) => {
-    localStorage.setItem('tasks', SuperJSON.stringify(tasks))
-  })
+  state.initialize()
 }
 
-function getInitialState() {
-  let state: Task[] = []
-
-  try {
-    const savedTasks = SuperJSON.parse(localStorage.getItem('tasks') ?? '[]')
-    state = z.array(TaskSchema).parse(savedTasks)
-  } catch (error) {
-    console.error('Failed to parse saved tasks')
+function getService() {
+  switch (import.meta.env.VITE_STORAGE) {
+    case 'server':
+      return new RemoteTaskService()
+    case 'local':
+    default:
+      return new LocalStorageTaskService()
   }
-
-  return state
 }

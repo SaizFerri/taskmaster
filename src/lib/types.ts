@@ -1,11 +1,37 @@
-import type { TaskSchema } from '@/components/tasks/taskUtils'
-import type { z } from 'zod'
+import { z } from 'zod'
 
 export enum TaskStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'inProgress',
   COMPLETED = 'completed'
 }
+
+export const TaskSchema = z.object({
+  id: z.string().min(1),
+  status: z.nativeEnum(TaskStatus),
+  title: z.string().min(1).max(255),
+  description: z.string().min(1),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  dueDate: z.preprocess((date) => new Date(date as string).toISOString(), z.string().datetime())
+})
+
+export const CreateTaskSchema = TaskSchema.pick({
+  title: true,
+  description: true,
+  dueDate: true
+})
+
+export type CreateTaskForm = z.infer<typeof CreateTaskSchema>
+
+export const EditTaskSchema = TaskSchema.pick({
+  title: true,
+  description: true,
+  status: true,
+  dueDate: true
+})
+
+export type EditTaskForm = z.infer<typeof EditTaskSchema>
 
 export type Task = z.infer<typeof TaskSchema>
 

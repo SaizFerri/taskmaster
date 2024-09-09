@@ -28,7 +28,7 @@ function handleFilterStatusChange(e: Event) {
 <template>
   <nav class="flex items-start justify-between rounded-md bg-slate-100 p-2">
     <Button @click="isAddTaskDialogOpen = true" class="flex items-center gap-1">
-      <Plus :size="16" />
+      <Plus :size="16" aria-hidden />
       Add task</Button
     >
     <AddTaskDialog
@@ -42,7 +42,7 @@ function handleFilterStatusChange(e: Event) {
         <select
           name="status"
           id="status"
-          class="border-border rounded border p-2"
+          class="rounded border border-border p-2"
           :value="status"
           @change="handleFilterStatusChange"
         >
@@ -59,8 +59,8 @@ function handleFilterStatusChange(e: Event) {
           class="flex items-center gap-1 text-sm"
           @click="emit('onSortChange')"
         >
-          <ArrowUpNarrowWide v-show="sort === 'asc'" :size="16" />
-          <ArrowDownWideNarrow v-show="sort === 'desc'" :size="16" />
+          <ArrowUpNarrowWide v-show="sort === 'asc'" :size="16" aria-hidden />
+          <ArrowDownWideNarrow v-show="sort === 'desc'" :size="16" aria-hidden />
           <span>Due date</span>
         </Button>
       </div>
