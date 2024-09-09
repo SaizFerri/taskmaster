@@ -2,10 +2,8 @@
 import { statusText } from '@/lib/const'
 import { TaskStatus, type Sort } from '@/lib/types'
 import { ArrowDownWideNarrow, ArrowUpNarrowWide, Plus } from 'lucide-vue-next'
-import { ref } from 'vue'
 import Button from '../ui/Button.vue'
 
-const isAddTaskDialogOpen = ref(false)
 defineProps<{ status?: TaskStatus; sort?: Sort }>()
 const emit = defineEmits<{
   (e: 'onStatusChange', status?: TaskStatus): void

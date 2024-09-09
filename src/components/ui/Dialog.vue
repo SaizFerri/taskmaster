@@ -24,6 +24,11 @@ const close = () => {
 
 watchEffect(() => {
   isVisible.value = props.open
+  if (props.open) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'initial'
+  }
 })
 </script>
 

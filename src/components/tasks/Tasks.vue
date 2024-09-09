@@ -5,6 +5,7 @@ import { TaskStatus, type CreateTask, type EditTask, type Sort, type Task } from
 import { useTasksStore } from '@/stores/tasks'
 import { computed, ref } from 'vue'
 import AddTaskDialog from './AddTaskDialog.vue'
+import { Loader2 } from 'lucide-vue-next'
 
 const status = ref<TaskStatus | undefined>(undefined)
 const sort = ref<Sort>('asc')
@@ -60,7 +61,12 @@ function removeTask(id: Task['id']) {
     @onStatusChange="updateStatusFilter"
     @onAddTask="isAddTaskDialogOpen = true"
   />
+  <div v-if="store.isLoading" class="my-8 flex flex-col items-center justify-center gap-4">
+    <Loader2 class="animate-spin" />
+    Loading tasks...
+  </div>
   <TaskList
+    v-if="!store.isLoading"
     :tasks="tasks"
     @onAddTask="
       (status: TaskStatus) => {
