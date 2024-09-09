@@ -72,7 +72,7 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
         </DropdownList>
       </Dropdown>
     </div>
-    <p class="mb-2 text-sm">{{ task.description }}</p>
+    <p class="mb-2 whitespace-pre-line text-sm">{{ task.description }}</p>
     <div class="flex items-center gap-2">
       <span class="text-sm">{{ format(new Date(task.dueDate), 'MMMM d, yyyy') }}</span>
       <Badge
