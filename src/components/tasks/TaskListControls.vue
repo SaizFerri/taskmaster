@@ -26,7 +26,7 @@ function handleFilterStatusChange(e: Event) {
 </script>
 
 <template>
-  <nav class="flex items-start justify-between rounded-md bg-slate-100 p-2">
+  <nav class="flex flex-wrap items-start justify-between gap-4 rounded-md bg-slate-100 p-2">
     <Button @click="isAddTaskDialogOpen = true" class="flex items-center gap-1">
       <Plus :size="16" aria-hidden />
       Add task</Button

@@ -92,16 +92,16 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
         >Updated: {{ format(task.updatedAt, 'MMMM d, yyyy') }}</span
       >
     </div>
+    <EditTaskDialog
+      :open="isEditTaskDialogOpen"
+      :task="task"
+      @onClose="isEditTaskDialogOpen = false"
+      @onEditTask="(data: EditTask) => $emit('onEdit', task.id, data)"
+    />
+    <DeleteTaskDialog
+      :open="isDeleteTaskDialogOpen"
+      @onClose="isDeleteTaskDialogOpen = false"
+      @onDeleteTask="$emit('onRemove', task.id)"
+    />
   </div>
-  <EditTaskDialog
-    :open="isEditTaskDialogOpen"
-    :task="task"
-    @onClose="isEditTaskDialogOpen = false"
-    @onEditTask="(data: EditTask) => $emit('onEdit', task.id, data)"
-  />
-  <DeleteTaskDialog
-    :open="isDeleteTaskDialogOpen"
-    @onClose="isDeleteTaskDialogOpen = false"
-    @onDeleteTask="$emit('onRemove', task.id)"
-  />
 </template>

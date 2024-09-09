@@ -13,7 +13,7 @@ importers:
         version: 11.0.3(vue@3.5.2(typescript@5.4.5))
       '@vueuse/integrations':
         specifier: ^11.0.3
-        version: 11.0.3(axios@1.7.7)(focus-trap@7.5.4)(vue@3.5.2(typescript@5.4.5))
+        version: 11.0.3(axios@1.7.7)(focus-trap@7.5.4)(sortablejs@1.14.0)(vue@3.5.2(typescript@5.4.5))
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -4131,6 +4131,9 @@ packages:
     resolution: {integrity: sha512-qMCMfhY040cVHT43K9BFygqYbUPFZKHOg7K73mtTWJRb8pyP3fzf4Ixd5SzdEJQ6MRUg/WBnOLxghZtKKurENQ==}
     engines: {node: '>=10'}
 
+  sortablejs@1.14.0:
+    resolution: {integrity: sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w==}
+
   source-map-js@1.2.0:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
     engines: {node: '>=0.10.0'}
@@ -6754,7 +6757,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@11.0.3(axios@1.7.7)(focus-trap@7.5.4)(vue@3.5.2(typescript@5.4.5))':
+  '@vueuse/integrations@11.0.3(axios@1.7.7)(focus-trap@7.5.4)(sortablejs@1.14.0)(vue@3.5.2(typescript@5.4.5))':
     dependencies:
       '@vueuse/core': 11.0.3(vue@3.5.2(typescript@5.4.5))
       '@vueuse/shared': 11.0.3(vue@3.5.2(typescript@5.4.5))
@@ -6762,6 +6765,7 @@ snapshots:
     optionalDependencies:
       axios: 1.7.7(debug@4.3.6)
       focus-trap: 7.5.4
+      sortablejs: 1.14.0
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -9188,6 +9192,9 @@ snapshots:
       ansi-styles: 4.3.0
       astral-regex: 2.0.0
       is-fullwidth-code-point: 3.0.0
+
+  sortablejs@1.14.0:
+    optional: true
 
   source-map-js@1.2.0: {}
 
