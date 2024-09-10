@@ -2,6 +2,7 @@
 import { cn } from '@/lib/utils'
 import { cva, type VariantProps } from 'class-variance-authority'
 import type { ClassValue } from 'clsx'
+import type { Component } from 'vue'
 
 const button = cva('rounded-md font-semibold transition ease-linear text-sm', {
   variants: {
@@ -19,14 +20,22 @@ const button = cva('rounded-md font-semibold transition ease-linear text-sm', {
 
 export type ButtonProps = VariantProps<typeof button>
 
-withDefaults(defineProps<{ variant?: ButtonProps['variant']; size?: ButtonProps['size'] }>(), {
-  variant: 'primary',
-  size: 'default'
-})
+withDefaults(
+  defineProps<{
+    variant?: ButtonProps['variant']
+    size?: ButtonProps['size']
+    as?: Component | string
+  }>(),
+  {
+    as: 'button',
+    variant: 'primary',
+    size: 'default'
+  }
+)
 </script>
 
 <template>
-  <button :class="cn(button({ variant, size }), $props.class as ClassValue)">
+  <component :is="as" :class="cn(button({ variant, size }), $props.class as ClassValue)">
     <slot></slot>
-  </button>
+  </component>
 </template>
