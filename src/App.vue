@@ -7,8 +7,10 @@ useTaskStoreSubscribers()
 </script>
 
 <template>
-  <Header />
-  <div class="py-[calc(72px+16px)]">
-    <RouterView />
+  <div>
+    <Header />
+    <div class="py-[calc(72px+16px)]">
+      <RouterView />
+    </div>
   </div>
 </template>

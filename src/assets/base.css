@@ -35,10 +35,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   @apply text-foreground;
 }
-
+a,
 button,
 input,
 select,
 textarea {
-  @apply outline-foreground-button outline-offset-4;
+  @apply outline-offset-4 outline-foreground-button;
+}
+
+a {
+  @apply font-semibold text-blue-700 underline-offset-4 hover:underline;
 }

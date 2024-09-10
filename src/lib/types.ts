@@ -2,6 +2,13 @@ import { z } from 'zod'
 
 export type Sort = 'asc' | 'desc'
 
+export const RegisterSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6)
+})
+
+export type RegisterForm = z.infer<typeof RegisterSchema>
+
 export enum TaskStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'inProgress',

@@ -4,19 +4,22 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import type { ClassValue } from 'clsx'
 import type { Component } from 'vue'
 
-const button = cva('rounded-md font-semibold transition ease-linear text-sm', {
-  variants: {
-    variant: {
-      primary: 'bg-primary text-foreground-button hover:bg-brand-400/90',
-      secondary: 'bg-slate-200 text-foreground-button hover:bg-slate-300/90',
-      destructive: 'bg-red-600 text-white hover:bg-red-700/90'
-    },
-    size: {
-      default: 'px-4 py-2',
-      small: 'px-3 py-2'
+const button = cva(
+  'rounded-md font-semibold transition ease-linear text-sm disabled:opacity-70 hover:no-underline',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-primary text-foreground-button hover:bg-brand-400/90',
+        secondary: 'bg-slate-200 text-foreground-button hover:bg-slate-300/90',
+        destructive: 'bg-red-600 text-white hover:bg-red-700/90'
+      },
+      size: {
+        default: 'px-4 py-2',
+        small: 'px-3 py-2'
+      }
     }
   }
-})
+)
 
 export type ButtonProps = VariantProps<typeof button>
 
