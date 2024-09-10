@@ -41,7 +41,7 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
       })
     "
   >
-    <div class="mb-2 flex items-start justify-between gap-2">
+    <div class="mb-1 flex items-start justify-between gap-2">
       <div class="flex items-center gap-2">
         <span class="text font-bold">{{ task.title }}</span>
         <Badge v-if="showBadge" :variant="badgeVariant[task.status]">
@@ -72,7 +72,7 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
         </DropdownList>
       </Dropdown>
     </div>
-    <p class="mb-2 whitespace-pre-line text-sm">{{ task.description }}</p>
+    <p class="mb-4 whitespace-pre-line text-sm leading-6">{{ task.description }}</p>
     <div class="flex items-center gap-2">
       <span class="text-sm">{{ format(new Date(task.dueDate), 'MMMM d, yyyy') }}</span>
       <Badge
