@@ -1,7 +1,7 @@
 import './assets/base.css'
 
 import { createPinia } from 'pinia'
-import { createApp } from 'vue'
+import { createApp, nextTick } from 'vue'
 
 import { useAuthStore } from '@/stores/auth'
 import App from './App.vue'
@@ -16,17 +16,20 @@ const authStore = useAuthStore()
 if (import.meta.env.VITE_APP_MODE === 'offline') {
   setupApp()
 } else {
-  authStore.$subscribe((_, state) => {
-    console.log(state)
-
-    if (!state.isLoading) {
-      setupApp()
-    }
-  })
+  authStore.$subscribe(
+    (_, state) => {
+      if (!state.isLoading) {
+        setupApp()
+      }
+    },
+    { once: true }
+  )
 }
 
 function setupApp() {
   const router = setupRouter()
   app.use(router)
-  app.mount('#app')
+  nextTick(() => {
+    app.mount('#app')
+  })
 }

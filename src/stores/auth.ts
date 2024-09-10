@@ -1,9 +1,18 @@
 import { auth } from '@/lib/firebase'
 import { onAuthStateChanged, type User } from 'firebase/auth'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 
-const useFirebaseAuthStore = defineStore('auth', () => {
+type BaseUser = { uid: string }
+type AuthStore = {
+  user: Ref<BaseUser | undefined>
+  isAuthenticated: Ref<boolean>
+  isLoading: Ref<boolean>
+  onLogin(userInfo: BaseUser): void
+  logout(): void
+}
+
+const useFirebaseAuthStore = defineStore('auth', (): AuthStore => {
   const user = ref<User | undefined>()
   const isLoading = ref(true)
   const isAuthenticated = ref(false)
@@ -43,7 +52,8 @@ const useFirebaseAuthStore = defineStore('auth', () => {
   }
 })
 
-const useNoAuthStore = defineStore('auth', () => {
+const useNoAuthStore = defineStore('auth', (): AuthStore => {
+  const user = ref({ uid: 'local' })
   const isLoading = ref(false)
   const isAuthenticated = ref(true)
 
@@ -56,6 +66,7 @@ const useNoAuthStore = defineStore('auth', () => {
   }
 
   return {
+    user,
     isAuthenticated,
     isLoading,
     onLogin,

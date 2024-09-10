@@ -3,9 +3,9 @@ import TaskList from '@/components/tasks/TaskList.vue'
 import TaskListControls from '@/components/tasks/TaskListControls.vue'
 import { TaskStatus, type CreateTask, type EditTask, type Sort, type Task } from '@/lib/types'
 import { useTasksStore } from '@/stores/tasks'
+import { Loader2 } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import AddTaskDialog from './AddTaskDialog.vue'
-import { Loader2 } from 'lucide-vue-next'
 
 const status = ref<TaskStatus | undefined>(undefined)
 const sort = ref<Sort>('asc')

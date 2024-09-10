@@ -6,18 +6,19 @@ import { z } from 'zod'
 const STORAGE_KEY = 'tasks'
 
 export class LocalStorageTaskService implements TaskService {
-  async create(task: CreateTask): Promise<void> {
+  async create(userId: string, task: CreateTask): Promise<void> {
     const tasks = await this.getAll()
     tasks.push({
       ...task,
       id: generateRandomId(),
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      userId
     })
     this.save(tasks)
   }
 
-  async update(id: Task['id'], data: EditTask): Promise<void> {
+  async update(_: string, id: Task['id'], data: EditTask): Promise<void> {
     const tasks = await this.getAll()
     const taskIndex = tasks.findIndex((t) => t.id === id)
 
@@ -30,17 +31,25 @@ export class LocalStorageTaskService implements TaskService {
     this.save(tasks)
   }
 
-  async remove(id: Task['id']): Promise<void> {
+  async remove(_: string, id: Task['id']): Promise<void> {
     const tasks = await this.getAll()
     this.save(tasks.filter((task) => task.id !== id))
   }
 
-  async getAll() {
+  async getAll(userId?: string) {
     let state: Task[] = []
 
     try {
       const savedTasks = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')
-      state = z.array(TaskSchema).parse(savedTasks)
+      state = z
+        .array(TaskSchema)
+        .parse(savedTasks)
+        .filter((task) => {
+          if (userId) {
+            return task.userId === userId
+          }
+          return true
+        })
     } catch (error) {
       console.error('Failed to parse saved tasks', error)
     }

@@ -2,19 +2,24 @@ import type { TaskService } from '@/api/tasks/TaskService'
 import type { Task, CreateTask, EditTask } from '@/lib/types'
 
 export class RemoteTaskService implements TaskService {
-  async getAll(): Promise<Task[]> {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks`)
+  async getAll(userId: string): Promise<Task[]> {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
+      headers: {
+        'X-User': userId
+      }
+    })
     if (!response.ok) {
       throw new Error('There was an error loading the tasks')
     }
     const data = await response.json()
     return data
   }
-  async create(task: CreateTask) {
+  async create(userId: string, task: CreateTask) {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-User': userId
       },
       body: JSON.stringify(task)
     })
@@ -22,11 +27,12 @@ export class RemoteTaskService implements TaskService {
       throw new Error('There was an error creating the tasks')
     }
   }
-  async update(id: Task['id'], task: EditTask) {
+  async update(userId: string, id: Task['id'], task: EditTask) {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-User': userId
       },
       body: JSON.stringify(task)
     })
@@ -34,9 +40,12 @@ export class RemoteTaskService implements TaskService {
       throw new Error('There was an error updating the tasks')
     }
   }
-  async remove(id: Task['id']) {
+  async remove(userId: string, id: Task['id']) {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'X-User': userId
+      }
     })
     if (!response.ok) {
       throw new Error('There was an error deleting the tasks')

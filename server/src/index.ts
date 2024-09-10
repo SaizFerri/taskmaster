@@ -16,12 +16,16 @@ const db = await JSONFilePreset<{ tasks: Task[] }>(resolve(import.meta.dirname, 
 
 const router = express.Router()
 
-router.get('/', async (_req, res) => {
+router.get('/', async (req, res) => {
+  const userId = req.headers['x-user'] as string
+
   await db.read()
-  res.json(db.data.tasks)
+  res.json(db.data.tasks.filter((task) => task.userId === userId))
 })
 
 router.post('/', async (req, res) => {
+  const userId = req.headers['x-user'] as string
+
   try {
     const taskData = CreateTaskSchema.parse(req.body)
     const newTask = {
@@ -29,7 +33,8 @@ router.post('/', async (req, res) => {
       id: generateRandomId(),
       status: TaskStatus.PENDING,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      userId
     }
 
     db.data.tasks.push(newTask)

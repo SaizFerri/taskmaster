@@ -17,6 +17,7 @@ export enum TaskStatus {
 
 export const TaskSchema = z.object({
   id: z.string().min(1),
+  userId: z.string(),
   status: z.nativeEnum(TaskStatus),
   title: z.string().min(1).max(255),
   description: z.string().min(1),
@@ -44,8 +45,8 @@ export type EditTaskForm = z.infer<typeof EditTaskSchema>
 
 export type Task = z.infer<typeof TaskSchema>
 
-export type CreateTask = Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
-export type EditTask = Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
+export type CreateTask = Omit<Task, 'id' | 'createdAt' | 'updatedAt' | 'userId'>
+export type EditTask = Omit<Task, 'id' | 'createdAt' | 'updatedAt' | 'userId'>
 
 export type FormField<Value> = {
   value: Value

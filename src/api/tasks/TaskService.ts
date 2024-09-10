@@ -1,8 +1,8 @@
 import type { CreateTask, EditTask, Task } from '@/lib/types'
 
 export interface TaskService {
-  getAll(): Promise<Task[]>
-  create(task: CreateTask): void
-  update(id: Task['id'], task: EditTask): void
-  remove(id: Task['id']): void
+  getAll(userId: string): Promise<Task[]>
+  create(userId: string, task: CreateTask): void
+  update(userId: string, id: Task['id'], task: EditTask): void
+  remove(userId: string, id: Task['id']): void
 }

@@ -3,6 +3,7 @@ import { TaskStatus, type Task } from '@/lib/types'
 export function mockTask(overrides: Partial<Task> = {}): Task {
   return {
     id: 'testId',
+    userId: 'local',
     title: 'Complete project documentation',
     description: 'Write detailed documentation for the new project features.',
     status: TaskStatus.PENDING,
