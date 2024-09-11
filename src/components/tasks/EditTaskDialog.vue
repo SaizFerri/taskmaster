@@ -37,10 +37,7 @@ watch(
 )
 
 const submit = handleSubmit((data) => {
-  emit('onEditTask', {
-    ...data,
-    dueDate: data.dueDate
-  })
+  emit('onEditTask', data)
 
   handleClose()
 })

@@ -1,3 +1,4 @@
+import { isValid } from 'date-fns'
 import { z } from 'zod'
 
 export type Sort = 'asc' | 'desc'
@@ -23,7 +24,18 @@ export const TaskSchema = z.object({
   description: z.string().min(1),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  dueDate: z.preprocess((date) => new Date(date as string).toISOString(), z.string().datetime())
+  dueDate: z.preprocess((date) => {
+    if (!date || typeof date !== 'string') {
+      return undefined
+    }
+    const parsedDate = new Date(date)
+
+    if (!isValid(parsedDate)) {
+      return undefined
+    } else {
+      return parsedDate.toISOString()
+    }
+  }, z.string().datetime())
 })
 
 export const CreateTaskSchema = TaskSchema.pick({

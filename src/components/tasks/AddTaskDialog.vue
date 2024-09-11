@@ -23,7 +23,6 @@ const { form, handleSubmit, reset, update } = useForm<CreateTaskForm>(CreateTask
 const submit = handleSubmit((data) => {
   emit('onAddTask', {
     ...data,
-    dueDate: data.dueDate,
     status: TaskStatus.PENDING
   })
 
