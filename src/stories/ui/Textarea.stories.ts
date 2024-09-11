@@ -7,12 +7,10 @@ const meta = {
   component: Textarea,
   tags: ['autodocs'],
   argTypes: {
-    modelValue: {
-      description: 'v-model'
-    }
+    value: {}
   },
   args: {
-    modelValue: 'This Textarea rocks'
+    value: 'This Textarea rocks'
   },
   parameters: {}
 } satisfies Meta<typeof Textarea>
@@ -24,11 +22,11 @@ export const Default: Story = {
   render: (args) => ({
     components: { Textarea },
     setup() {
-      const value = ref(args.modelValue)
+      const value = ref(args.value)
       return { args, value }
     },
     template: `
-      <Textarea v-model="value" />
+      <Textarea :value="value" @input="(val) => value = val" />
       <p class="mt-2">Textarea value: {{ value }}</p>
     `
   })
@@ -38,7 +36,7 @@ export const FormTextarea: Story = {
   render: (args) => ({
     components: { Textarea },
     setup() {
-      const value = ref(args.modelValue)
+      const value = ref(args.value)
       return { args, value }
     },
     template: `
@@ -46,10 +44,11 @@ export const FormTextarea: Story = {
         <label for="test" class="text-sm font-semibold leading-none">Title</label>
         <Textarea
           id="test"
-          v-model="value"
+          :value="value"
           placeholder="Integrate PayPal"
           autocomplete="off"
           class="mt-2"
+          @input="(val) => value = val"
         />
         <span class="text-xs text-red-600">An error ocurred</span>
       </div>

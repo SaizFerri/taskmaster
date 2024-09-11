@@ -6,13 +6,9 @@ const meta = {
   title: 'UI/Input',
   component: Input,
   tags: ['autodocs'],
-  argTypes: {
-    modelValue: {
-      description: 'v-model'
-    }
-  },
+  argTypes: {},
   args: {
-    modelValue: 'This input rocks'
+    value: 'This input rocks'
   },
   parameters: {}
 } satisfies Meta<typeof Input>
@@ -24,11 +20,11 @@ export const Default: Story = {
   render: (args) => ({
     components: { Input },
     setup() {
-      const value = ref(args.modelValue)
+      const value = ref(args.value)
       return { args, value }
     },
     template: `
-      <Input v-model="value" />
+      <Input :value="value" @input="(val) => value = val" />
       <p class="mt-2">Input value: {{ value }}</p>
     `
   })
@@ -38,7 +34,7 @@ export const FormInput: Story = {
   render: (args) => ({
     components: { Input },
     setup() {
-      const value = ref(args.modelValue)
+      const value = ref(args.value)
       return { args, value }
     },
     template: `
@@ -46,10 +42,11 @@ export const FormInput: Story = {
         <label for="test" class="text-sm font-semibold leading-none">Title</label>
         <Input
           id="test"
-          v-model="value"
+          :value="value"
           placeholder="Integrate PayPal"
           autocomplete="off"
           class="mt-2"
+          @input="(val) => value = val"
         />
         <span class="text-xs text-red-600">An error ocurred</span>
       </div>
