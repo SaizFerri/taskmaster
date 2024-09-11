@@ -7,12 +7,8 @@ const meta = {
   title: 'UI/Dialog',
   component: Dialog,
   tags: ['autodocs'],
-  argTypes: {},
-  args: {},
-  parameters: {
-    slots: {
-      default: {}
-    }
+  argTypes: {
+    onOnClose: { action: 'onClose', table: { disable: true } }
   }
 } satisfies Meta<typeof Dialog>
 
@@ -31,9 +27,15 @@ export const Default: Story = {
       const open = ref(args.open)
       return { args, open }
     },
+    methods: {
+      handleClose() {
+        this.open = false
+        this.args.onOnClose()
+      }
+    },
     template: `
       <Button @click="open = true">Open dialog</Button>
-      <Dialog :open="open" :title="args.title" @onClose="open = false">
+      <Dialog :open="open" :title="args.title" @onClose="handleClose">
         {{ args.default }}
       </Dialog>
     `

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { UseFocusTrap } from '@vueuse/integrations/useFocusTrap/component'
 import { X } from 'lucide-vue-next'
-import { ref, Teleport, useTemplateRef, watchEffect } from 'vue'
+import { ref, useTemplateRef, watchEffect } from 'vue'
 
 type Props = {
   open: boolean

@@ -1,18 +1,23 @@
 import Task from '@/components/tasks/Task.vue'
 import { mockTask } from '@/components/tasks/taskFixtures'
 import { TaskStatus } from '@/lib/types'
-import { action } from '@storybook/addon-actions'
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { subDays } from 'date-fns'
 
 const meta = {
   title: 'Components/Task',
   component: Task,
   tags: ['autodocs'],
+  argTypes: {
+    task: {
+      table: { type: { summary: 'Task' } }
+    },
+    onOnEdit: { action: 'onEdit', table: { disable: true } },
+    onOnRemove: { action: 'onRemove', table: { disable: true } }
+  },
   args: {
     task: mockTask(),
-    showBadge: true,
-    onOnEdit: action('onEdit'),
-    onOnRemove: action('onRemove')
+    showBadge: true
   }
 } satisfies Meta<typeof Task>
 
@@ -22,6 +27,16 @@ type Story = StoryObj<typeof meta>
 export const Pending: Story = {
   args: {
     task: mockTask(),
+    showBadge: false
+  }
+}
+
+export const Overdue: Story = {
+  args: {
+    task: mockTask({
+      status: TaskStatus.PENDING,
+      dueDate: subDays(new Date(), 1).toISOString()
+    }),
     showBadge: false
   }
 }
