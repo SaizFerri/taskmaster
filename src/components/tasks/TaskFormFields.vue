@@ -11,6 +11,7 @@ defineProps<{
 <template>
   <FormInput
     id="title"
+    name="title"
     label="Title"
     :field="form.title"
     placeholder="Integrate PayPal"
@@ -18,10 +19,11 @@ defineProps<{
   />
   <FormTextarea
     id="description"
+    name="description"
     label="Description"
     :field="form.description"
     :placeholder="`To integrate PayPal do:\n1. Get API Key\n2. Use it\n3. Ship it`"
     autocomplete="off"
   />
-  <FormInput id="dueDate" label="Due date" :field="form.dueDate" type="date" />
+  <FormInput id="dueDate" name="dueDate" label="Due date" :field="form.dueDate" type="date" />
 </template>

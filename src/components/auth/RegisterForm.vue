@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { useForm } from '@/composables/useForm'
-import FormInput from '../ui/FormInput.vue'
-import { RegisterSchema, type RegisterForm } from '@/lib/types'
-import Button from '../ui/Button.vue'
-import { useAuthStore } from '@/stores/auth'
-import { createUserWithEmailAndPassword, type AuthError } from 'firebase/auth'
 import { auth } from '@/lib/firebase'
-import { ref } from 'vue'
+import { RegisterSchema, type RegisterForm } from '@/lib/types'
+import { createUserWithEmailAndPassword, type AuthError } from 'firebase/auth'
 import { Loader2 } from 'lucide-vue-next'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Button from '../ui/Button.vue'
+import FormInput from '../ui/FormInput.vue'
 
 const router = useRouter()
-const { form, handleSubmit, reset } = useForm<RegisterForm>(RegisterSchema)
+const { form, handleSubmit, update } = useForm<RegisterForm>(RegisterSchema)
 const isLoading = ref(false)
 const error = ref<string | undefined>()
 
@@ -22,7 +21,6 @@ const submit = handleSubmit(async ({ email, password }) => {
     await createUserWithEmailAndPassword(auth, email, password)
     router.push('/login')
   } catch (e) {
-    console.log({ e })
     error.value = (e as AuthError).message
   } finally {
     isLoading.value = false
@@ -31,10 +29,26 @@ const submit = handleSubmit(async ({ email, password }) => {
 </script>
 
 <template>
-  <form class="flex flex-col gap-4" @submit.prevent="submit">
-    <FormInput id="email" label="E-mail" :field="form.email" placeholder="john@doe.com" />
+  <form
+    class="flex flex-col gap-4"
+    @submit.prevent="submit"
+    @input="
+      update(
+        ($event.target as HTMLInputElement).name as keyof RegisterForm,
+        ($event.target as HTMLInputElement).value
+      )
+    "
+  >
+    <FormInput
+      id="email"
+      name="email"
+      label="E-mail"
+      :field="form.email"
+      placeholder="john@doe.com"
+    />
     <FormInput
       id="password"
+      name="password"
       label="Password"
       :field="form.password"
       placeholder="******"

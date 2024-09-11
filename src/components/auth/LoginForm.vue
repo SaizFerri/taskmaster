@@ -12,7 +12,7 @@ import { useAuthStore } from '@/stores/auth'
 
 const { onLogin } = useAuthStore()
 const router = useRouter()
-const { form, handleSubmit } = useForm<RegisterForm>(RegisterSchema)
+const { form, handleSubmit, update } = useForm<RegisterForm>(RegisterSchema)
 const isLoading = ref(false)
 const error = ref<string | undefined>()
 
@@ -24,7 +24,6 @@ const submit = handleSubmit(async ({ email, password }) => {
     onLogin(userCredentials.user)
     router.push('/')
   } catch (e) {
-    console.log({ e })
     error.value = (e as AuthError).message
   } finally {
     isLoading.value = false
@@ -33,9 +32,24 @@ const submit = handleSubmit(async ({ email, password }) => {
 </script>
 
 <template>
-  <form class="flex flex-col gap-4" @submit.prevent="submit">
-    <FormInput id="email" label="E-mail" :field="form.email" />
-    <FormInput id="password" label="Password" :field="form.password" type="password" />
+  <form
+    class="flex flex-col gap-4"
+    @submit.prevent="submit"
+    @input="
+      update(
+        ($event.target as HTMLInputElement).name as keyof RegisterForm,
+        ($event.target as HTMLInputElement).value
+      )
+    "
+  >
+    <FormInput id="email" name="email" label="E-mail" :field="form.email" />
+    <FormInput
+      id="password"
+      name="password"
+      label="Password"
+      :field="form.password"
+      type="password"
+    />
     <Button :disabled="isLoading" class="text-center">
       <Loader2 v-if="isLoading" class="inline animate-spin text-foreground-button" />
       <template v-if="!isLoading">Log in</template>

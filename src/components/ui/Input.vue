@@ -1,6 +1,15 @@
 <script setup lang="ts">
-const model = defineModel()
+defineProps<{
+  value?: string
+}>()
+defineEmits<{
+  input: [value: string]
+}>()
 </script>
 <template>
-  <input v-model="model" class="border-border inline-block w-full rounded border px-3 py-2" />
+  <input
+    :value="value"
+    @input="$emit('input', ($event.target as HTMLInputElement).value)"
+    class="inline-block w-full rounded border border-border px-3 py-2"
+  />
 </template>

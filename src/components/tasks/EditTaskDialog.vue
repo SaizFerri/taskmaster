@@ -27,7 +27,7 @@ const emit = defineEmits<{
   onEditTask: [data: EditTask]
 }>()
 
-const { form, handleSubmit, reset } = useForm<EditTaskForm>(EditTaskSchema, {
+const { form, handleSubmit, reset, update } = useForm<EditTaskForm>(EditTaskSchema, {
   defaultValues: getDefaultValues(props.task)
 })
 
@@ -56,14 +56,23 @@ function getDefaultValues(task: Task) {
 
 <template>
   <Dialog :open="open" @onClose="handleClose" title="Edit task">
-    <form class="flex flex-col gap-4" @submit.prevent="submit">
+    <form
+      class="flex flex-col gap-4"
+      @submit.prevent="submit"
+      @input="
+        update(
+          ($event.target as HTMLInputElement).name as keyof EditTaskForm,
+          ($event.target as HTMLInputElement).value
+        )
+      "
+    >
       <div>
         <label for="status" class="block text-sm font-semibold leading-none">Status</label>
         <select
-          name="status"
           id="status"
+          name="status"
+          :value="form.status.value"
           class="mt-2 w-full rounded border border-border p-2"
-          v-model="form.status.value"
         >
           <option value="">All</option>
           <option :value="TaskStatus.PENDING">{{ statusText[TaskStatus.PENDING] }}</option>

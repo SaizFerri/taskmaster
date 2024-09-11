@@ -18,7 +18,7 @@ const emit = defineEmits<{
   onAddTask: [data: CreateTask]
 }>()
 
-const { form, handleSubmit, reset } = useForm<CreateTaskForm>(CreateTaskSchema)
+const { form, handleSubmit, reset, update } = useForm<CreateTaskForm>(CreateTaskSchema)
 
 const submit = handleSubmit((data) => {
   emit('onAddTask', {
@@ -38,7 +38,16 @@ function handleClose() {
 
 <template>
   <Dialog :open="open" @onClose="handleClose" title="Add new task">
-    <form class="flex flex-col gap-4" @submit.prevent="submit">
+    <form
+      class="flex flex-col gap-4"
+      @submit.prevent="submit"
+      @input="
+        update(
+          ($event.target as HTMLInputElement).name as keyof CreateTaskForm,
+          ($event.target as HTMLInputElement).value
+        )
+      "
+    >
       <TaskFormFields :form="form" />
       <div class="mt-6 flex gap-2">
         <Button>Create</Button>
