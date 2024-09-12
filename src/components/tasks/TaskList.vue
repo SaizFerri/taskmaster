@@ -49,15 +49,7 @@ const onDrop = (status: TaskStatus) => {
 </script>
 
 <template>
-  <div v-if="tasks.length === 0">
-    <h2 class="mt-8 text-center text-xl font-semibold">
-      There are not tasks. Click 'Add task' to create a new one.
-    </h2>
-  </div>
-  <div
-    v-if="tasks.length > 0"
-    class="grid min-h-screen grid-cols-[repeat(3,minmax(300px,1fr))] gap-2 overflow-x-auto"
-  >
+  <div class="grid min-h-screen grid-cols-[repeat(3,minmax(300px,1fr))] gap-2 overflow-x-auto">
     <div
       v-for="status in Object.values(TaskStatus)"
       class="flex flex-col gap-2 rounded-md bg-slate-100 p-2"
@@ -77,6 +69,7 @@ const onDrop = (status: TaskStatus) => {
       <Button
         class="bg-white/50 text-center text-foreground-button hover:bg-white"
         @click="$emit('onAddTask', status)"
+        v-bind:[`data-test-task-add-${status}`]="''"
         ><Plus :size="16" class="inline-block"
       /></Button>
     </div>

@@ -29,8 +29,10 @@ function handleClose() {
   <Dialog :open="open" @onClose="handleClose" title="Delete task">
     <p>Are sure that you want to delete this task?</p>
     <div class="mt-6 flex gap-2">
-      <Button variant="destructive" @click="handleDelete">Delete</Button>
-      <Button variant="secondary" @click="handleClose">Cancel</Button>
+      <Button variant="destructive" @click="handleDelete" data-test-task-confirm-delete
+        >Delete</Button
+      >
+      <Button variant="secondary" @click="handleClose" data-test-task-confirm-cancel>Cancel</Button>
     </div>
   </Dialog>
 </template>

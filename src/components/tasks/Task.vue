@@ -40,10 +40,12 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
         'bg-green-100': task.status === TaskStatus.COMPLETED
       })
     "
+    data-test-task
+    v-bind:[`data-test-task-status-${task.status}`]="''"
   >
     <div class="mb-1 flex items-start justify-between gap-2">
       <div class="flex items-center gap-2">
-        <span class="text font-bold">{{ task.title }}</span>
+        <span class="text font-bold" data-test-task-title>{{ task.title }}</span>
         <Badge v-if="showBadge" :variant="badgeVariant[task.status]">
           {{ statusText[task.status] }}
         </Badge>
@@ -53,17 +55,18 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
         <DropdownTrigger
           as="button"
           class="rounded-md p-1 transition ease-linear hover:bg-gray-100"
+          data-test-task-menu
         >
           <EllipsisVertical :size="16" />
         </DropdownTrigger>
         <DropdownList>
-          <DropdownItem @click="isEditTaskDialogOpen = true">
+          <DropdownItem @click="isEditTaskDialogOpen = true" data-test-task-menu-edit>
             <div class="flex items-center gap-2">
               <Pencil :size="12" />
               <span>Edit</span>
             </div>
           </DropdownItem>
-          <DropdownItem @click="isDeleteTaskDialogOpen = true">
+          <DropdownItem @click="isDeleteTaskDialogOpen = true" data-test-task-menu-delete>
             <div class="flex items-center gap-2 text-red-600">
               <Trash2 :size="12" />
               <span>Delete</span>
@@ -72,9 +75,13 @@ const badgeVariant: Record<TaskStatus, BadgeProps['variant']> = {
         </DropdownList>
       </Dropdown>
     </div>
-    <p class="mb-4 whitespace-pre-line text-sm leading-6">{{ task.description }}</p>
+    <p class="mb-4 whitespace-pre-line text-sm leading-6" data-test-task-description>
+      {{ task.description }}
+    </p>
     <div class="flex items-center gap-2">
-      <span class="text-sm">{{ format(new Date(task.dueDate), 'MMMM d, yyyy') }}</span>
+      <span class="text-sm" data-test-task-dueDate>{{
+        format(new Date(task.dueDate), 'MMMM d, yyyy')
+      }}</span>
       <Badge
         v-if="
           isBefore(new Date(task.dueDate), startOfDay(new Date())) &&

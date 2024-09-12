@@ -15,7 +15,7 @@ async function handleLogout() {
 </script>
 
 <template>
-  <header class="fixed flex h-[72px] w-full items-center bg-white px-4">
+  <header class="fixed z-20 flex h-[72px] w-full items-center bg-white px-4">
     <div class="container mx-auto">
       <div class="flex items-center justify-between">
         <RouterLink to="/" class="text-black hover:no-underline">
