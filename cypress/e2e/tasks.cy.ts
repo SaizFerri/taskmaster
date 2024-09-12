@@ -19,7 +19,7 @@ describe('Task flows', () => {
     cy.get('[data-test-task-menu]').click()
     cy.get('[data-test-task-menu-edit]').click()
 
-    cy.contains('h1', 'Edit task')
+    cy.contains('h2', 'Edit task')
 
     cy.get('input[name="title"]').type('Changed')
 
