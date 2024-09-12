@@ -16,12 +16,12 @@ async function handleLogout() {
 
 <template>
   <header class="fixed z-20 flex h-[72px] w-full items-center bg-white px-4">
-    <div class="container mx-auto">
+    <div class="mx-auto w-full lg:container">
       <div class="flex items-center justify-between">
         <RouterLink to="/" class="text-black hover:no-underline">
           <h1 class="flex items-center gap-1">
             <Notebook aria-hidden />
-            <span class="text-2xl font-bold">TaskMaster</span>
+            <span class="text-xl font-bold sm:text-2xl">TaskMaster</span>
           </h1>
         </RouterLink>
         <div v-if="showAuth">

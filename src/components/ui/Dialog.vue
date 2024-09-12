@@ -55,7 +55,7 @@ watchEffect(() => {
           >
             <X :size="16" />
           </button>
-          <h1 id="dialog-title" class="mb-3 text-lg font-bold">{{ title }}</h1>
+          <h2 id="dialog-title" class="mb-3 text-lg font-bold">{{ title }}</h2>
           <slot></slot>
         </div>
       </div>
