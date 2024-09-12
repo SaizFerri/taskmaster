@@ -10,7 +10,7 @@ type Props = {
 
 const props = defineProps<Props>()
 const emit = defineEmits<{
-  (e: 'onClose', open: boolean): void
+  onClose: [open: boolean]
 }>()
 
 const isVisible = ref(props.open)

@@ -3,7 +3,7 @@ import { TaskSchema, type CreateTask, type EditTask, type Task } from '@/lib/typ
 import { generateRandomId } from '@/lib/utils'
 import { z } from 'zod'
 
-const STORAGE_KEY = 'tasks'
+export const STORAGE_KEY = 'tasks'
 
 export class LocalStorageTaskService implements TaskService {
   async create(userId: string, task: CreateTask): Promise<void> {
